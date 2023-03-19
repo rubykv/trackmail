@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+#application properties
+smtp:
+  auth: true
+  host: "smtp.gmail.com"
+  port: 465
+  ssl: "true"
+  protocol: "TLSv1.2"
+  socket: "javax.net.SocketFactory"
