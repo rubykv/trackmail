@@ -65,10 +65,10 @@ public class EmailService {
             emailRecipientRepository.save(rec);
 
             Optional<EmailAccount> emailAcctOptional = emailServerRepository.findById("admin");
-            EmailAccount emailAcct = emailAcctOptional.get();
-            if (null == emailAcct) {
+            if (emailAcctOptional.isEmpty()) {
                 throw new GatewayException("Attempt to fetch server details failed");
             }
+            EmailAccount emailAcct = emailAcctOptional.get();
 
             Session session = Session.getInstance(prop, new Authenticator() {
                 @Override
@@ -83,8 +83,8 @@ public class EmailService {
             message.setSubject(request.subject());
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            //add image tracker here
-            mimeBodyPart.setContent(request.content(), "text/html; charset=utf-8");
+            String formattedContent = getEmailBodyWithTracker(request, pixelId);
+            mimeBodyPart.setContent(formattedContent, "text/html; charset=utf-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(mimeBodyPart);
 
@@ -101,5 +101,11 @@ public class EmailService {
             System.out.println(ex);
             throw new GatewayException("Failed to process Email, Try Again!");
         }
+    }
+
+    private static String getEmailBodyWithTracker(EmailRequest request, String pixelId) {
+        String imgUrl = "http://localhost:8080/tracker/"+ pixelId;
+        String formattedContent = String.format("<html><body>%1s<img src="+imgUrl+" width=\"1\" height=\"1\"></body>\n</html>", request.content());
+        return formattedContent;
     }
 }

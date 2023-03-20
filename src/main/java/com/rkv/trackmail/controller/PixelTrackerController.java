@@ -8,21 +8,24 @@ import com.rkv.trackmail.service.TrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Controller
+@ResponseBody
 public class PixelTrackerController {
 
     @Autowired
     TrackerService trackerService;
-    //try 302 to verify mail read
+
     @GetMapping("/email/analytics")
     public ResponseEntity<List<TrackerResponse>> getEmailAnalytics(@RequestBody TrackerRequest request) {
         return new ResponseEntity<>(trackerService.getEmailAnalytics(request), HttpStatus.OK);
     }
 
-    @PutMapping("/tracker/{id}")
+    @GetMapping("/tracker/{id}")
     public ResponseEntity<Void> updateEmailAnalyticsInfo(@PathVariable String id) {
         trackerService.updateEmailAnalyticsInfo(id);
         return new ResponseEntity<>(HttpStatus.OK);
