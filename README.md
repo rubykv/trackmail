@@ -5,7 +5,7 @@ Java app to send and track email
 This app is built on Spring Boot 3.0.4 and Gradle-Kotlin and is generated from https://start.spring.io/
 
 1. Install OpenJDK 17
-2. Install Redis (Alternatively use a Redis Client, example - Red for Mac)
+2. Install Redis (Optionally use a Redis Client, example - Red for Mac)
 
 # How to Run the App
 1. Clone this repository
